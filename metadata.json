@@ -1,0 +1,6 @@
+{
+  "name": "Sweet 16 Birthday Card",
+  "description": "An interactive, beautiful, and personalized birthday greeting app for a girlfriend's sweet 16th. Features a blowable/clickable virtual candle cake, personalized AI wishes generator, scrapbook gallery, memory trivia quiz, music player, and magical wishes stars.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
