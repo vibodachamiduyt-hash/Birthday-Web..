@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet 16 Birthday Card for Jessica 🌸</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Beautiful Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;950&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons Script -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    .font-display {
+      font-family: 'Outfit', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Custom romantic smooth ambient pulse simulation */
+    @keyframes bg-pulse-warm {
+      0%, 100% { background-color: #fff1f2; } /* rose-50 */
+      50% { background-color: #ffe4e6; } /* rose-100 */
+    }
+    .animate-bg-warm {
+      animation: bg-pulse-warm 10s ease-in-out infinite;
+    }
+
+    /* Floating stardust particle animation */
+    @keyframes particle-drift {
+      0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0.4; }
+      50% { transform: translateY(-30px) translateX(20px) rotate(180deg); opacity: 0.8; }
+      100% { transform: translateY(0px) translateX(0px) rotate(360deg); opacity: 0.4; }
+    }
+    .animate-stardust {
+      animation: particle-drift 18s ease-in-out infinite;
+    }
+
+    /* Custom pink scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: rgba(244, 63, 94, 0.2);
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(244, 63, 94, 0.4);
+    }
+  </style>
+</head>
+<body class="animate-bg-warm min-h-screen flex flex-col justify-between py-6 px-4 md:px-8 relative">
+
+  <!-- Floating Ambient Particles background decoration -->
+  <div class="absolute top-12 left-[10%] w-24 h-24 bg-rose-200/40 rounded-full blur-3xl opacity-60 pointer-events-none animate-stardust"></div>
+  <div class="absolute bottom-[20%] right-[10%] w-32 h-32 bg-pink-200/40 rounded-full blur-3xl opacity-60 pointer-events-none animate-stardust" style="animation-delay: 4s;"></div>
+
+  <!-- Confetti Canvas Container -->
+  <div id="confetti-container" class="absolute inset-0 pointer-events-none z-50 overflow-hidden"></div>
+
+  <!-- Primary Navigation Bento Header -->
+  <header class="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 z-40 pb-5 mb-6 border-b border-rose-100/80">
+    <div class="flex items-center space-x-3">
+      <div class="w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-rose-200">
+        <i data-lucide="heart" class="h-6 w-6 fill-current animate-pulse"></i>
+      </div>
+      <div class="text-left">
+        <h1 class="text-xl md:text-2xl font-display font-black text-rose-900 tracking-tight leading-none" id="app-title">
+          For My Favorite Person
+        </h1>
+        <p class="text-xs text-rose-500 font-bold font-mono uppercase tracking-wider mt-1" id="app-subtitle">
+          ✦ Sweet Sixteen Celebrating Jessica ✦
+        </p>
+      </div>
+    </div>
+
+    <!-- Music Box & Sandbox Language Toggle -->
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <!-- Sinhala/English Translation Toggle Button -->
+      <button 
+        onclick="toggleLanguage()" 
+        class="bg-white px-4 py-2 border-2 border-rose-100 text-rose-600 hover:bg-rose-50 rounded-full text-xs font-bold font-display shadow-xs flex items-center gap-2 cursor-pointer transition"
+        id="lang-toggle-btn"
+      >
+        <i data-lucide="languages" class="w-3.5 h-3.5"></i>
+        <span>Translate to Sinhala (සිංහල)</span>
+      </button>
+
+      <!-- Self-reliant Web Audio Synthesizer Music Box Widget -->
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl p-3 shadow-xs border border-rose-100 flex items-center gap-4 relative overflow-hidden max-w-sm" id="music-box">
+        <div class="flex items-center gap-2.5">
+          <button 
+            onclick="toggleMusicPlayback()" 
+            id="music-play-btn"
+            class="p-2 rounded-xl bg-pink-100 hover:bg-pink-200 text-pink-600 transition flex items-center justify-center"
+            title="Play Happy Birthday tune"
+          >
+            <i data-lucide="play" class="w-4 h-4 fill-current" id="music-icon-state"></i>
+          </button>
+          <div class="text-left">
+            <h4 class="text-xs font-bold text-gray-800 leading-tight">Music Box</h4>
+            <p class="text-[9px] text-gray-400 font-mono leading-none mt-0.5" id="music-playing-label">Retro Synth Melody</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reset App / Lock Button -->
+      <button 
+        onclick="resetLocks()" 
+        class="px-4 py-2.5 bg-white border-2 border-rose-100 text-rose-600 hover:bg-rose-50 hover:border-rose-200 rounded-full text-[10px] font-mono font-extrabold uppercase tracking-widest flex items-center gap-1.5 transition shadow-xs cursor-pointer"
+        id="lock-toggle-btn"
+        title="Lock desk to retry blowing out candles"
+      >
+        <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+        <span id="lock-btn-text">RE-LOCK</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Interactive Arena Sandbox Space -->
+  <main class="flex-grow w-full max-w-6xl mx-auto flex flex-col items-center justify-center z-30 py-4">
+
+    <!-- STAGE 1: BENTO GRID CANDLES LOCKED MODULE -->
+    <div id="stage-locked" class="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      
+      <!-- Bento Card 1: Sweet Narrative Intro (col-span-8) -->
+      <div class="lg:col-span-8 bg-white rounded-[2rem] border-2 border-rose-100 p-8 md:p-10 flex flex-col justify-center relative overflow-hidden shadow-xs text-left">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-rose-100 rounded-full opacity-50 pointer-events-none"></div>
+        <div class="absolute top-20 left-10 w-4 h-4 bg-rose-400 rounded-full"></div>
+        
+        <span class="text-rose-500 font-extrabold text-xs uppercase tracking-widest mb-3 flex items-center gap-1.5 font-mono">
+          <i data-lucide="heart" class="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse"></i>
+          <span id="card-hero-tag">Happy sweet 16 milestone</span>
+        </span>
+        
+        <h2 class="text-5xl md:text-7xl font-display font-black text-rose-600 leading-none tracking-tight">
+          Happy <br/>Sweet 16,
+        </h2>
+        <h3 class="text-5xl md:text-7xl font-display font-black text-rose-900 mt-1 mb-4" id="gf-display-title">Jessica!</h3>
+        
+        <p class="text-rose-800 font-medium text-base md:text-lg max-w-md leading-relaxed" id="locked-narrative-p">
+          Dearest Jessica, reaching sweet sixteen is a magical boundary of key starlight. It is a year for your dreams to bloom and your happiest smiles to rise. Before your interactive gifts unlock, you must blow out all 16 candles below to claim your wishes!
+        </p>
+
+        <!-- Sandbox Personalization Drawer inside card -->
+        <div class="mt-8 border-t border-dashed border-rose-100 pt-5 flex flex-wrap items-center gap-3">
+          <span class="text-[10px] font-mono font-extrabold text-rose-400 uppercase tracking-widest" id="customize-label">✏️ Sandbox Setup:</span>
+          <div class="flex items-center gap-2">
+            <input 
+              type="text" 
+              id="gf-name-input" 
+              value="Jessica" 
+              placeholder="Girlfriend's name"
+              oninput="handleSandboxNameChange()"
+              class="bg-rose-50/50 border-2 border-rose-100 rounded-xl px-3 py-1.5 text-xs font-bold text-rose-900 focus:outline-none focus:border-rose-400 w-28"
+            >
+            <input 
+              type="text" 
+              id="sender-name-input" 
+              value="Alex" 
+              placeholder="Your name"
+              oninput="handleSandboxNameChange()"
+              class="bg-rose-50/50 border-2 border-rose-100 rounded-xl px-3 py-1.5 text-xs font-bold text-rose-900 focus:outline-none focus:border-rose-400 w-28"
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Card 2: Big level index display (col-span-4) -->
+      <div class="lg:col-span-4 bg-rose-500 rounded-[2rem] p-8 flex flex-col items-center justify-center text-white text-center shadow-lg shadow-rose-200">
+        <span class="text-sm uppercase tracking-widest font-black opacity-80 mb-2" id="level-badge-label">Level Unlocked</span>
+        <span class="text-8xl font-black italic select-none">16</span>
+        <span class="text-lg font-bold mt-2" id="level-desc-label">Years of Perfection</span>
+      </div>
+
+      <!-- Bento Card 3: Interactive Virtual Candle Cake (col-span-8) -->
+      <div class="lg:col-span-8 bg-white rounded-[2rem] border-2 border-rose-100 p-6 md:p-8 shadow-xs flex flex-col justify-center items-center">
+        <div class="text-center mb-6">
+          <h4 class="text-rose-900 font-extrabold text-lg" id="cake-title">Virtual Birthday Cake</h4>
+          <p class="text-rose-400 text-xs" id="cake-tip">Click or tap individual flames to blow them out!</p>
+        </div>
+
+        <!-- Cake Interactive Visuals Block -->
+        <div class="relative flex flex-col items-center justify-end w-full h-80 mt-4">
+          
+          <!-- Candles grid overlay -->
+          <div class="absolute top-2 left-0 right-0 z-30 flex flex-wrap justify-center gap-3 max-w-md mx-auto px-4" id="candles-grid">
+            <!-- 16 Candles dynamically populated below -->
+          </div>
+
+          <!-- 3D Pastel Styled Cake Visual -->
+          <div class="w-72 md:w-80 h-36 relative mt-16 z-10 flex flex-col justify-end">
+            <!-- Top frosting row -->
+            <div class="w-60 md:w-64 h-12 bg-gradient-to-r from-pink-100 via-pink-200 to-pink-100 rounded-lg mx-auto relative bottom-[-8px] shadow-sm flex items-center justify-between px-6 border border-pink-100">
+              <div class="w-3 h-2.5 bg-rose-500 rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]"></div>
+              <div class="w-3 h-2.5 bg-rose-500 rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]"></div>
+              <div class="w-3 h-2.5 bg-rose-500 rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]"></div>
+              <div class="w-3 h-2.5 bg-rose-500 rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]"></div>
+              <div class="w-3 h-2.5 bg-rose-500 rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]"></div>
+            </div>
+
+            <!-- Big core tier -->
+            <div class="w-full h-24 bg-gradient-to-r from-pink-300 via-rose-200 to-pink-300 rounded-xl relative shadow-md border-b-6 border-pink-400 border-x border-t border-pink-200 flex flex-col justify-between overflow-hidden">
+              <!-- Dripping frosting visual loops -->
+              <div class="flex justify-between w-full h-6 relative top-[-1px]">
+                <div class="w-6 h-5 bg-pink-50 rounded-b-full border-b border-pink-100"></div>
+                <div class="w-6 h-4 bg-pink-50 rounded-b-full"></div>
+                <div class="w-6 h-5 bg-pink-50 rounded-b-full border-b border-pink-100"></div>
+                <div class="w-6 h-3 bg-pink-50 rounded-b-full"></div>
+                <div class="w-6 h-5 bg-pink-50 rounded-b-full border-b border-pink-100"></div>
+                <div class="w-6 h-4 bg-pink-50 rounded-b-full"></div>
+                <div class="w-6 h-5 bg-pink-50 rounded-b-full border-b border-pink-100"></div>
+                <div class="w-6 h-3 bg-pink-50 rounded-b-full"></div>
+                <div class="w-6 h-5 bg-pink-50 rounded-b-full border-b border-pink-100"></div>
+                <div class="w-6 h-4 bg-pink-50 rounded-b-full"></div>
+                <div class="w-6 h-5 bg-pink-50 rounded-b-full border-b border-pink-100"></div>
+                <div class="w-6 h-3 bg-pink-50 rounded-b-full"></div>
+                <div class="w-6 h-5 bg-pink-50 rounded-b-full border-b border-pink-100"></div>
+              </div>
+
+              <!-- Cake Sweet Seventeen Labels -->
+              <div class="absolute inset-x-0 top-10 flex flex-col items-center justify-center pointer-events-none select-none">
+                <span class="text-xl md:text-2xl font-display font-black text-rose-500/85 tracking-widest drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)] uppercase" id="cake-text-tag">
+                  JESSICA
+                </span>
+                <span class="font-mono text-[9px] font-extrabold text-pink-700/60 uppercase tracking-widest mt-0.5" id="cake-text-subtitle">
+                  ✦ SWEET SIXTEEN CELEBRATION ✦
+                </span>
+              </div>
+
+              <!-- Plastic plate base row -->
+              <div class="w-full h-3 bg-white border-t border-pink-200 z-20"></div>
+            </div>
+          </div>
+
+          <!-- White plastic dish tray base -->
+          <div class="w-80 md:w-96 h-4 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full relative bottom-[-1px] shadow-lg border border-gray-200"></div>
+        </div>
+
+        <!-- Candles State and Reset Tools -->
+        <div class="flex flex-col items-center justify-center gap-3 mt-6 pt-4 border-t border-rose-50 w-full mb-1">
+          <div class="text-xs font-semibold text-gray-500 font-mono tracking-wide">
+            <span id="candles-counting-text">Candles Lit:</span> <span class="text-rose-600 font-sans text-sm font-extrabold" id="candles-counter-number">16</span>/16
+          </div>
+          <div class="flex gap-3">
+            <button onclick="resetCandles()" class="flex items-center gap-1 bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200 rounded-xl px-4 py-2 text-xs font-semibold transition cursor-pointer">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+              <span id="btn-reset-candles">Reset Candles</span>
+            </button>
+            <button onclick="instantBlow()" class="flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-150 rounded-xl px-4 py-2 text-xs font-semibold transition cursor-pointer">
+              Blow All Instantly 💨
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Card 4: Historical Stats Panel (col-span-4) -->
+      <div class="lg:col-span-4 flex flex-col gap-6 justify-between">
+        <div class="bg-white rounded-[2rem] border-2 border-rose-100 p-8 shadow-xs text-left grow">
+          <h4 class="text-rose-900 font-black text-xl mb-4" id="stats-title">The Stats</h4>
+          <ul class="space-y-4">
+            <li class="flex flex-col border-b border-rose-50 pb-2">
+              <span class="text-rose-400 text-xs font-extrabold uppercase" id="years-on-earth-tag">Days on Earth</span>
+              <span class="text-rose-900 font-black text-2xl leading-none mt-1 font-mono">5,844</span>
+            </li>
+            <li class="flex flex-col border-b border-rose-50 pb-2">
+              <span class="text-rose-400 text-xs font-extrabold uppercase" id="snacks-tag">Favorite snacks eaten</span>
+              <span class="text-rose-900 font-black text-2xl leading-none mt-1 font-mono">∞</span>
+            </li>
+            <li class="flex flex-col">
+              <span class="text-rose-400 text-xs font-extrabold uppercase" id="hearts-tag">Hearts Stolen</span>
+              <span class="text-rose-900 font-extrabold text-base leading-snug mt-1" id="hearts-detail">
+                Just Alex's (mostly)
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-rose-50 rounded-[2rem] border-2 border-dashed border-rose-300 p-6 flex flex-col items-center justify-center text-center shadow-inner">
+          <div class="text-4xl mb-2">🎁</div>
+          <p class="text-rose-900 font-extrabold text-sm" id="locked-gbox-title">Special Surprise Waiting</p>
+          <p class="text-rose-500 text-xs mt-1" id="locked-gbox-subtitle">Blow out all 16 candles to unlock</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- STAGE 2: BENTO GIFT CHEST UNLOCKED MODULE (HIDDEN BY DEFAULT) -->
+    <div id="stage-unlocked" class="w-full flex flex-col gap-6 hidden">
+      
+      <!-- Unlocked celebration header card -->
+      <div class="bg-white rounded-[2rem] border-2 border-rose-100 p-8 flex flex-col md:flex-row items-center justify-between gap-5 text-left shadow-xs relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-rose-50 rounded-full opacity-60"></div>
+        <div>
+          <div class="inline-flex items-center gap-2 bg-emerald-50 px-3.5 py-1.5 rounded-full text-emerald-700 font-extrabold text-xs uppercase shadow-xs border border-emerald-100 mb-3 animate-bounce">
+            🎉 Level 16 Present Chest Unlocked!
+          </div>
+          <h2 class="text-3xl md:text-4xl font-display font-black text-rose-900 tracking-tight leading-none" id="unlocked-header-title">
+            Sarah&apos;s Sweet 16 Gift Box
+          </h2>
+          <p class="text-sm text-rose-500 font-medium mt-2" id="unlocked-header-tag">
+            Dearest Jessica, browse your personalized premium interactive presents or blow a kiss!
+          </p>
+        </div>
+        <!-- Level 16 indicator -->
+        <div class="bg-rose-500 text-white rounded-[1.5rem] px-6 py-4 flex flex-col justify-center items-center shadow-md shadow-rose-200">
+          <span class="text-[10px] uppercase font-bold opacity-80 tracking-widest" id="badge-mil-text">Milestone</span>
+          <span class="text-4xl font-extrabold italic select-none">#16</span>
+        </div>
+      </div>
+
+      <!-- Main Columns Grid Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full items-start">
+        
+        <!-- Left Side: Gift Picker list items (col-span-4) -->
+        <div class="lg:col-span-4 flex flex-col gap-6">
+          
+          <div class="bg-white rounded-[2rem] border-2 border-rose-100 p-6 shadow-xs text-left">
+            <h3 class="text-rose-900 font-black text-lg mb-4 flex items-center gap-2" id="present-picker-title">
+              <i data-lucide="gift" class="w-5 h-5 text-rose-500 animate-bounce"></i>
+              Pick Your Present
+            </h3>
+            
+            <div class="flex flex-col gap-3">
+              <!-- Tab Navigation Items -->
+              <button 
+                onclick="switchTab('letter')" 
+                id="tab-letter"
+                class="p-4 rounded-2xl border-2 text-left transition-all duration-300 relative overflow-hidden group cursor-pointer border-rose-400 bg-rose-50/60 shadow-xs"
+              >
+                <div class="absolute right-3 top-3 w-2 h-2 rounded-full bg-rose-500 active-tab-dot"></div>
+                <div class="font-sans font-black text-sm text-rose-955 transition group-hover:text-rose-600">
+                  AI Birthday Card 💌
+                </div>
+                <div class="text-rose-400 font-medium text-xs mt-0.5" id="nav-desc-letter">
+                  Read personalized sweet cards
+                </div>
+              </button>
+
+              <button 
+                onclick="switchTab('scrapbook')" 
+                id="tab-scrapbook"
+                class="p-4 rounded-2xl border-2 text-left transition-all duration-300 relative overflow-hidden group cursor-pointer border-rose-100/50 bg-white hover:border-rose-200 hover:bg-rose-50/20"
+              >
+                <div class="absolute right-3 top-3 w-2 h-2 rounded-full bg-rose-500 hidden active-tab-dot"></div>
+                <div class="font-sans font-black text-sm text-rose-955 transition group-hover:text-rose-600">
+                  Memory Scrapbook 📸
+                </div>
+                <div class="text-rose-400 font-medium text-xs mt-0.5" id="nav-desc-scrapbook">
+                  Browse beautiful timeline memories
+                </div>
+              </button>
+
+              <button 
+                onclick="switchTab('quiz')" 
+                id="tab-quiz"
+                class="p-4 rounded-2xl border-2 text-left transition-all duration-300 relative overflow-hidden group cursor-pointer border-rose-100/50 bg-white hover:border-rose-200 hover:bg-rose-50/20"
+              >
+                <div class="absolute right-3 top-3 w-2 h-2 rounded-full bg-rose-500 hidden active-tab-dot"></div>
+                <div class="font-sans font-black text-sm text-rose-955 transition group-hover:text-rose-600">
+                  Chemistry Challenge 🏆
+                </div>
+                <div class="text-rose-400 font-medium text-xs mt-0.5" id="nav-desc-quiz">
+                  Test your cute soulmate scores
+                </div>
+              </button>
+
+              <button 
+                onclick="switchTab('well')" 
+                id="tab-well"
+                class="p-4 rounded-2xl border-2 text-left transition-all duration-300 relative overflow-hidden group cursor-pointer border-rose-100/50 bg-white hover:border-rose-200 hover:bg-rose-50/20"
+              >
+                <div class="absolute right-3 top-3 w-2 h-2 rounded-full bg-rose-500 hidden active-tab-dot"></div>
+                <div class="font-sans font-black text-sm text-rose-955 transition group-hover:text-rose-600">
+                  Starry Wishing Well 🌌
+                </div>
+                <div class="text-rose-400 font-medium text-xs mt-0.5" id="nav-desc-well">
+                  Cast orbital stardust desires
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sweet heart signature card -->
+          <div class="bg-white rounded-[2rem] border-2 border-rose-100 p-6 shadow-xs text-left flex flex-col justify-between relative overflow-hidden">
+            <div class="absolute -bottom-6 -right-6 text-rose-50 opacity-10">
+              <i data-lucide="heart" class="w-24 h-24 fill-current"></i>
+            </div>
+            <p class="text-rose-800 leading-relaxed italic text-sm relative z-10" id="bento-signature-text">
+              &ldquo;To the girl who can light up a whole room just by walking in—Happy Birthday. I am so lucky to be standing by your side. Let&apos;s make sixteen unforgettable!&rdquo;
+            </p>
+            <div class="mt-4 flex items-center space-x-2 pt-4 border-t border-rose-100/60 relative z-10">
+              <div class="w-8 h-8 rounded-full bg-rose-200 flex items-center justify-center text-xs font-bold text-rose-700 font-mono" id="sender-initials">
+                AL
+              </div>
+              <span class="text-rose-950 font-extrabold text-xs" id="signature-sign">Yours always, Alex</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Side: Presents details rendering deck (col-span-8) -->
+        <div class="lg:col-span-8 bg-white rounded-[2rem] border-2 border-rose-100 p-6 md:p-8 shadow-xs text-left min-h-[500px]">
+          
+          <!-- TAB SECTION A: LETTERS/WISH GENERATOR PANEL -->
+          <div id="panel-letter" class="flex flex-col gap-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+              <!-- Setup details -->
+              <div class="md:col-span-5 bg-rose-50/40 border border-rose-100 rounded-3xl p-5 text-left flex flex-col gap-4">
+                <div>
+                  <h4 class="font-sans font-black text-rose-950 text-base flex items-center gap-1.5 leading-none">
+                    <i data-lucide="wand-2" class="w-4 h-4 text-rose-500 animate-pulse"></i>
+                    Letter Customizer
+                  </h4>
+                  <p class="text-[11px] text-rose-500 mt-1 leading-normal">
+                    Change parameters to dynamically customize card letters for her 16th birthday!
+                  </p>
+                </div>
+
+                <!-- Customizer Setup -->
+                <div class="flex flex-col gap-3">
+                  <div class="flex flex-col gap-1">
+                    <label class="text-[9px] uppercase font-mono tracking-wider font-bold text-rose-700">Acoustic Tone Choice</label>
+                    <select id="user-tone" onchange="generateLocalWish()" class="bg-white border border-rose-100 rounded-lg px-2.5 py-1.5 text-xs font-bold text-rose-900 focus:outline-none">
+                      <option value="romantic">Deeply Romantic ❤️</option>
+                      <option value="poetic">Poetic Rhyme 📜</option>
+                      <option value="funny">Cute & Playful 🤪</option>
+                      <option value="sweet">Super Sweet Sugar 🌸</option>
+                    </select>
+                  </div>
+
+                  <div class="flex flex-col gap-1">
+                    <label class="text-[9px] uppercase font-mono tracking-wider font-bold text-rose-700">Include favorite sweet item</label>
+                    <input type="text" id="user-favor-things" value="vanilla cupcakes, acoustic songs, sleeping late" oninput="generateLocalWish()" class="bg-white border border-rose-100 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-rose-800 focus:outline-none">
+                  </div>
+                </div>
+
+                <div class="border-t border-rose-150 pt-3">
+                  <button onclick="generateLocalWish()" class="w-full py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1.5">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 animate-pulse"></i> Generate New Version
+                  </button>
+                </div>
+              </div>
+
+              <!-- Content Reveal card -->
+              <div class="md:col-span-7 bg-stone-50 border-r-2 border-b-2 border-stone-200 border rounded-3xl p-5 md:p-6 text-left relative overflow-hidden flex flex-col">
+                <div class="absolute top-0 right-0 w-12 h-12 bg-rose-200/20 rotate-45 select-none pointer-events-none"></div>
+                
+                <div class="border-b border-dashed border-stone-200 pb-3 mb-4">
+                  <span class="text-[9px] uppercase font-mono tracking-widest font-extrabold bg-stone-200/50 px-2 py-0.5 rounded text-stone-600">
+                    ✧ Age 16 Card ✧
+                  </span>
+                  <h4 class="font-serif italic font-extrabold text-stone-800 text-lg md:text-xl mt-1.5 leading-snug" id="card-card-title">
+                    Happy Sweet 16, Jessica!
+                  </h4>
+                </div>
+
+                <!-- Main handwriting text content -->
+                <div id="card-card-body" class="text-stone-700 text-xs md:text-sm leading-relaxed space-y-3 font-sans font-medium whitespace-pre-wrap max-h-80 overflow-y-auto pr-1.5 custom-scrollbar">
+                  <!-- Written content populated sequentially -->
+                </div>
+
+                <!-- Copy Block -->
+                <div class="bg-rose-50/25 border border-rose-100/40 p-3 rounded-xl mt-4 relative">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="text-[9px] uppercase font-mono tracking-widest font-extrabold text-rose-600">🌸 Little Quote</span>
+                    <button onclick="copyCardQuote()" class="text-[9px] font-mono border border-rose-200 px-2 py-0.5 rounded bg-white hover:bg-rose-50 text-rose-600 flex items-center gap-1 transition-all cursor-pointer">
+                      <i data-lucide="copy" class="w-3 h-3"></i> <span id="btn-copy-tag">Copy Quote</span>
+                    </button>
+                  </div>
+                  <p id="card-card-quote" class="text-xs font-mono font-bold text-gray-700 italic pr-4 select-all">
+                    "Every day looks sparkling when the sky holds you!"
+                  </p>
+                </div>
+
+                <!-- 3 Magical Wishes Grid list -->
+                <div class="mt-4 pt-3 border-t border-dashed border-stone-200 text-left">
+                  <span class="text-[9px] uppercase font-mono tracking-widest font-extrabold text-stone-500 block mb-2">✨ 3 Magical Wishes:</span>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-2" id="card-card-wishes">
+                    <!-- Loaded dynamically -->
+                  </div>
+                </div>
+
+                <!-- Predictions -->
+                <div class="mt-4 pt-3 border-t border-dashed border-stone-200">
+                  <span class="text-[9px] uppercase font-mono tracking-widest font-extrabold text-stone-500 block mb-2">🔮 Year 16 Prophecies:</span>
+                  <div class="space-y-1" id="card-card-predictions">
+                    <!-- Loaded dynamically -->
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- TAB SECTION B: SCRAPBOOK GALLERY DESIGN -->
+          <div id="panel-scrapbook" class="flex flex-col gap-6 hidden">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-rose-50 pb-4">
+              <div>
+                <h3 class="text-xl font-display font-black text-rose-900 flex items-center gap-2">
+                  📸 Our Sweet Memory Scrapbook
+                </h3>
+                <p class="text-xs text-rose-400">
+                  A beautiful record of our tiny precious dates. Upload or create yours!
+                </p>
+              </div>
+              <button onclick="toggleScrapbookForm()" class="flex items-center gap-1.5 px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs rounded-full transition shadow-xs cursor-pointer">
+                <i data-lucide="plus" class="w-4 h-4"></i> <span id="btn-create-memory-tag">Create New Memory</span>
+              </button>
+            </div>
+
+            <!-- Scrapbook adder form hidden by default -->
+            <div id="scrapbook-form-card" class="bg-rose-50/30 border border-rose-100 rounded-[1.5rem] p-5 hidden flex flex-col gap-4">
+              <h4 class="font-sans font-black text-rose-950 text-sm">Pin a Beautiful Memory Page</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="flex flex-col gap-1 text-left">
+                  <label class="text-[10px] uppercase font-mono font-bold text-rose-700">Memory Title</label>
+                  <input type="text" id="scrap-title" placeholder="e.g., Cooking pie together" class="bg-white border border-rose-100 rounded-lg px-3 py-1.5 text-xs focus:outline-none">
+                </div>
+                <div class="flex flex-col gap-1 text-left">
+                  <label class="text-[10px] uppercase font-mono font-bold text-rose-700">When / Month</label>
+                  <input type="text" id="scrap-date" placeholder="e.g., Sept 12, 2024" class="bg-white border border-rose-100 rounded-lg px-3 py-1.5 text-xs focus:outline-none">
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-1 text-left">
+                <label class="text-[10px] uppercase font-mono font-bold text-rose-700">Describe the story (What made it sweet?)</label>
+                <textarea id="scrap-desc" rows="3" placeholder="Tell her why this single afternoon makes your heart skip..." class="bg-white border border-rose-100 rounded-lg px-3 py-1.5 text-xs focus:outline-none resize-none"></textarea>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                <div class="flex flex-col gap-1 text-left">
+                  <label class="text-[10px] uppercase font-mono font-bold text-rose-700 font-mono">Image URL or Preset (Defaults provided)</label>
+                  <select id="scrap-img" class="bg-white border border-rose-100 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-rose-300">
+                    <option value="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=600&auto=format&fit=crop">Movie Popcorn Date 🍿</option>
+                    <option value="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop">Winter Snowy Walk ❄️</option>
+                    <option value="https://images.unsplash.com/photo-1526402978125-f1d6df913192?q=80&w=600&auto=format&fit=crop">Spring Picnic Grass 🍓</option>
+                  </select>
+                </div>
+
+                <div class="flex flex-col gap-1 text-left">
+                  <label class="text-[10px] uppercase font-mono font-bold text-rose-700">Sticker Badge</label>
+                  <div class="flex gap-2">
+                    <button type="button" onclick="setFormSticker('heart')" id="stick-heart" class="p-2 border rounded-lg bg-pink-100 text-rose-600 scale-105 transition"><i data-lucide="heart" class="w-4 h-4 fill-current"></i></button>
+                    <button type="button" onclick="setFormSticker('star')" id="stick-star" class="p-2 border rounded-lg bg-white text-yellow-500 hover:bg-gray-50 transition"><i data-lucide="star" class="w-4 h-4"></i></button>
+                    <button type="button" onclick="setFormSticker('flower')" id="stick-flower" class="p-2 border rounded-lg bg-white text-pink-400 hover:bg-gray-50 transition"><i data-lucide="sparkles" class="w-4 h-4"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <button onclick="addScrapbookMemory()" class="w-full bg-rose-500 hover:bg-rose-600 text-white rounded-xl py-2.5 text-xs font-black uppercase tracking-wider transition cursor-pointer">
+                Pin onto Memory board 📌
+              </button>
+            </div>
+
+            <!-- Polaroid Grid Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center" id="scrap-polaroid-grid">
+              <!-- Grid items loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- TAB SECTION C: CHEMISTRY QUIZ CARD -->
+          <div id="panel-quiz" class="flex flex-col gap-6 hidden">
+            
+            <!-- Standard active question state container -->
+            <div id="quiz-body" class="bg-rose-50/20 border border-rose-100 rounded-3xl p-5 md:p-6 text-left relative flex flex-col gap-5">
+              <div class="flex justify-between items-center border-b border-rose-50 pb-2">
+                <span class="text-xs font-black font-mono tracking-widest text-rose-500 uppercase" id="quiz-heading-label">🌸 Sweet Chemistry Quiz</span>
+                <span class="text-xs font-mono font-bold text-rose-400 bg-white/75 border border-rose-100 px-2.5 py-1 rounded-lg" id="quiz-counter">Question 1/4</span>
+              </div>
+
+              <!-- Question title text -->
+              <h4 id="quiz-question-txt" class="text-base md:text-lg font-display font-black text-rose-950 leading-snug">
+                Where did we share our very first official walk or meeting?
+              </h4>
+
+              <!-- Answers options column stack -->
+              <div class="flex flex-col gap-3" id="quiz-options-group">
+                <!-- Answer blocks loaded dynamically -->
+              </div>
+
+              <!-- Feedbacks section hidden by default -->
+              <div id="quiz-feedback-box" class="hidden p-4 rounded-2xl bg-rose-50 border border-rose-100 flex items-start gap-3">
+                <i data-lucide="heart" class="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse mt-0.5"></i>
+                <div>
+                  <h5 id="feedback-title" class="text-xs font-black uppercase tracking-wider text-rose-700">Oh my gosh, correct!</h5>
+                  <p id="feedback-desc" class="text-xs text-rose-900 font-medium mt-1 leading-normal">Explanation block detailing the memory sweetness...</p>
+                </div>
+              </div>
+
+              <!-- Action next buttons -->
+              <button onclick="quizNextStep()" id="quiz-next-btn" class="hidden w-full bg-rose-500 hover:bg-rose-600 active:scale-95 text-white py-3 rounded-2xl text-xs font-black tracking-widest uppercase transition-all flex items-center justify-center gap-1 cursor-pointer">
+                <span>Continue</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <!-- Quiz Scoring summaries card (hidden by default) -->
+            <div id="quiz-result-box" class="hidden bg-stone-50 border border-stone-150 p-6 md:p-8 rounded-[2rem] text-center flex flex-col items-center justify-center relative overflow-hidden">
+              <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-rose-400 via-pink-400 to-rose-400"></div>
+              
+              <div class="w-16 h-16 bg-rose-50 border border-rose-150 rounded-full flex items-center justify-center mb-4">
+                <i data-lucide="trophy" class="w-8 h-8 text-rose-500"></i>
+              </div>
+
+              <h3 class="text-xl font-display font-black text-rose-950" id="quiz-res-header">Your Chemistry Score</h3>
+              <div class="text-4xl font-extrabold text-rose-600 mt-2 font-mono" id="quiz-res-score">4/4</div>
+              
+              <p class="text-xs text-rose-800 font-bold max-w-sm mx-auto mt-2 leading-relaxed" id="quiz-res-evaluation">
+                You know me absolutely perfectly! Everyday by your side is a cozy sparkling dream! ❤️
+              </p>
+
+              <button onclick="restartQuiz()" class="mt-6 border border-rose-200 hover:bg-rose-50 text-rose-700 bg-white font-black text-xs px-6 py-2.5 rounded-xl transition cursor-pointer">
+                Try Trivia Again
+              </button>
+            </div>
+
+          </div>
+
+          <!-- TAB SECTION D: WISHING WELL CANVASES -->
+          <div id="panel-well" class="flex flex-col gap-6 hidden">
+            <div class="text-left border-b border-rose-50 pb-3">
+              <h3 class="text-xl font-display font-black text-rose-900" id="well-title">
+                🌌 Sweet Sixteen Wishing Well
+              </h3>
+              <p class="text-xs text-rose-400" id="well-subtitle">
+                Write a secret sixteenth birthday wish and cast it to orbit as a twinkling starlight!
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+              <!-- Starry sky canvas card (col-span-8) -->
+              <div class="lg:col-span-8 rounded-[1.5rem] bg-slate-950 h-80 relative overflow-hidden border border-slate-900 shadow-inner flex flex-col justify-between p-4">
+                
+                <!-- Sky Background Image Overlay styling -->
+                <div class="absolute inset-0 z-0 bg-cover bg-center opacity-65" style="background-image: url('/src/assets/images/dreamy_sky_bg_1779624878174.png');"></div>
+                <div class="absolute inset-0 z-10 bg-gradient-to-t from-slate-950 via-transparent to-purple-950/20 pointer-events-none"></div>
+
+                <!-- Twinkling stars orbits content board -->
+                <div class="absolute inset-0 z-20 overflow-hidden" id="stars-orbital-grid">
+                  <!-- Twinkling floating wishes nodes populated dynamically -->
+                </div>
+
+                <div class="z-30 pointer-events-none">
+                  <span class="text-[9px] font-mono font-extrabold uppercase tracking-wider text-pink-200/50 bg-white/5 border border-white/5 px-2 py-0.5 rounded backdrop-blur-xs">
+                    ✦ Orbit 16 Constellation List
+                  </span>
+                </div>
+
+                <!-- Decoder bubble display details -->
+                <div class="z-30 min-h-16 bg-slate-950/80 backdrop-blur-xs rounded-xl border border-white/5 p-3 flex flex-col items-center justify-center text-center">
+                  <div id="decoder-heading" class="text-yellow-200 text-[10px] font-mono font-bold uppercase tracking-widest leading-none mb-1 hidden">
+                    ✦ Star Wish Deciphered ✦
+                  </div>
+                  <p id="decoder-desc" class="text-white text-xs font-sans font-medium italic select-none">
+                    [ Click an orbital constellation node to decipher a secret desire ]
+                  </p>
+                  <button onclick="deleteWish()" id="decoder-delete-btn" class="hidden text-[9px] text-rose-400 hover:text-rose-300 transition-colors uppercase font-mono tracking-widest mt-1.5 font-bold cursor-pointer">
+                    Delete Wish Node
+                  </button>
+                </div>
+              </div>
+
+              <!-- Input text launches panel (col-span-4) -->
+              <div class="lg:col-span-4 bg-rose-50/10 border border-thin border-rose-100 rounded-[1.5rem] p-4 flex flex-col justify-between text-left">
+                <div>
+                  <h4 class="font-sans font-black text-rose-950 text-sm flex items-center gap-1.5 leading-none">
+                    <i data-lucide="wand-2" class="w-4 h-4 text-rose-500"></i>
+                    Sealing Desk
+                  </h4>
+                  <p class="text-[10px] text-rose-400 mt-1">
+                    Describe a beautiful seventeenth year prophecy and project it directly into her stars!
+                  </p>
+
+                  <div class="mt-4 flex flex-col gap-1.5">
+                    <label class="text-[9px] uppercase font-mono tracking-widest font-bold text-rose-700">Write Sweet Wish</label>
+                    <textarea id="well-text-input" rows="3" placeholder="I wish we bake ten thousand vanilla cupcakes together..." class="bg-white border border-rose-100 rounded-xl px-3 py-2 text-xs focus:outline-none resize-none placeholder-gray-400 text-rose-900"></textarea>
+                  </div>
+                </div>
+
+                <button onclick="launchWishStar()" class="mt-4 w-full bg-rose-500 hover:bg-rose-600 text-white rounded-xl py-2.5 text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+                  <i data-lucide="send" class="w-3.5 h-3.5"></i> Seal Wish ✨
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Sweet Interactive Sandbox footer containing cute notes -->
+  <footer class="w-full max-w-6xl mx-auto border-t border-rose-100/50 pt-5 mt-10 text-center z-40">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-[9px] font-mono font-bold text-rose-400/90" id="footer-text">
+        SWEET 16TH BIRTHDAY DESK CELEBRATION © 2026. THE COZIEST INTERACTIVE PRE-PRESENT FOR JESSICA.
+      </p>
+      
+      <div class="bg-rose-50 border border-rose-100/50 px-3 py-1 rounded-lg">
+        <span class="text-[10px] font-semibold text-rose-700 animate-pulse italic leading-none" id="footer-ticker-msg">
+          “ Age 16 is a sparkling milestone where dreams start spreading wings ”
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Inline Core Script Orchestrations -->
+  <script>
+    // System core flags
+    let isUnlocked = false;
+    let activeLanguage = "en"; // 'en' or 'si' for Sinhala
+    let activeTabId = "letter";
+    
+    // Sandbox names cached
+    let girlfriendName = "Jessica";
+    let senderName = "Alex";
+
+    // Candleslit grid Array tracking
+    let candles = new Array(16).fill(true);
+
+    // Audio context synthesized playback setup
+    let audioCtx = null;
+    let musicIsPlaying = false;
+    let songTimers = [];
+
+    // Local sandbox databases loaded from localStorage
+    let defaultMemories = [
+      {
+        id: "1",
+        date: "Aug 2024",
+        title: "Our First Movie Date",
+        title_si: "අපේ පූර්ව සිනමා හමුව",
+        description: "Sharing the popcorn tub and talking for hours in the parking lot. You laughed so hard your nose crinkled!",
+        description_si: "පොප්කෝන් බඳුන බෙදාගෙන පැය ගණනාවක් කතා කරමින් සිටි හැටි. ඔයා හිනා වෙනකොට නහය හුරතල් විදිහට රැලි ගැසුණු හැටි මතකයි!",
+        imageUrl: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=600&auto=format&fit=crop",
+        sticker: "heart"
+      },
+      {
+        id: "2",
+        date: "Dec 2024",
+        title: "Wandering in Snowy Lights",
+        title_si: "හිම සහ ලාම්පු එළි මැද",
+        description: "Remember how freezing cold it was? You stole my huge gloves but we ended up sharing pockets. Warmest night ever.",
+        description_si: "මතකද එදා කොච්චර සීතලද කියලා? ඔයා මගේ ලොකු ග්ලවුස් හොරකම් කරලා මගේ සාක්කුවේ දෑත් රඳවා ගත්තා. ජීවිතේ උණුසුම්ම රෑ එයයි.",
+        imageUrl: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop",
+        sticker: "star"
+      },
+      {
+        id: "3",
+        date: "Spring Picnic 2025",
+        title: "The Singing Strawberries",
+        title_si: "ස්ට්‍රෝබෙරි වසන්ත සැණකෙළිය",
+        description: "We tried baking that tiny strawberry pie, burnt the crust, and picnics on the soft grass instead.",
+        description_si: "ස්ට්‍රෝබෙරි පයි එකක් හදන්න ගිහින් කර කර ගත්ත හැටි, ඊට පස්සේ තණකොළ පිස්සේ සතුටු වුණු හැටි.",
+        imageUrl: "https://images.unsplash.com/photo-1526402978125-f1d6df913192?q=80&w=600&auto=format&fit=crop",
+        sticker: "flower"
+      }
+    ];
+
+    let defaultWishes = [
+      { id: "w1", text: "Choose to always stay laughing and happy exactly like today", text_si: "ඔයා අද වගේම හැමදාමත් සිනහවෙන් සහ සතුටින් සිටීමට ප්‍රාර්ථනා කරමි", x: 25, y: 22, size: 5, color: "#fecdd3" },
+      { id: "w2", text: "Go on ten thousand more starry late night walks", text_si: "තරු පිරි ලස්සන රෑ මැද තවත් දහස් වාරයක් ඇවිද යන්නට ලැබේවා", x: 70, y: 15, size: 6, color: "#fef08a" },
+      { id: "w3", text: "Sweet sixteenth year brings you infinite success & paintings", text_si: "ඔබේ සොඳුරු 16 වන වසර ඔබට අනන්තවත් සාර්ථකත්වය සහ සතුට ගෙන දේවා", x: 30, y: 55, size: 5, color: "#bfdbfe" }
+    ];
+
+    let items = [];
+    let wishes = [];
+    let hoveredWishId = null;
+
+    // Sinhala translations mapping dictionary for literal elements
+    const i18n = {
+      en: {
+        title: "For My Favorite Person",
+        subtitle: "✦ Sweet Sixteen Celebrating Jessica ✦",
+        tag: "Happy sweet 16 milestone",
+        narrative: "Dearest Jessica, reaching sweet sixteen is a magical boundary of key starlight. It is a year for your dreams to bloom and your happiest smiles to rise. Before your interactive gifts unlock, you must blow out all 16 candles below to claim your wishes!",
+        customize: "✏️ Sandbox Setup:",
+        level: "Level Unlocked",
+        leveldesc: "Years of Perfection",
+        cakeTitle: "Virtual Birthday Cake",
+        cakeTip: "Click or tap individual flames to blow them out!",
+        counting: "Candles Lit:",
+        btnReset: "Reset Candles",
+        statsTitle: "The Stats",
+        daysOnEarth: "Days on Earth",
+        snacks: "Favorite snacks eaten",
+        hearts: "Hearts Stolen",
+        stolenBy: "Just Alex's (mostly)",
+        waitingBoxTitle: "Special Surprise Waiting",
+        waitingBoxSub: "Blow out all 16 candles to unlock",
+        unlockedTitle: "Jessica's Sweet 16 Gift Box",
+        unlockedTag: "Dearest Jessica, browse your personalized premium interactive presents or blow a kiss!",
+        btnCreMem: "Create New Memory",
+        wellTitle: "🌌 Sweet Sixteen Wishing Well",
+        wellSub: "Write a secret sixteenth birthday wish and cast it to orbit as a twinkling starlight!",
+        footer: "SWEET 16TH BIRTHDAY DESK CELEBRATION © 2026. THE COZIEST INTERACTIVE PRE-PRESENT FOR JESSICA."
+      },
+      si: {
+        title: "මගේ ප්‍රියතම තැනැත්තිය වෙනුවෙන්මයි",
+        subtitle: "✦ ජෙසිකාගේ මිහිරි 16 වෙනි උපන් දින සැමරුම ✦",
+        tag: "මිහිරි 16 වන වසරේ සන්ධිස්ථානය",
+        narrative: "ආදරණීය ජෙසිකා, සොඳුරු දහසයවන වසරට පා තැබීම යනු තරු එළිය මුසු වූ ජීවිතයේ ඉන්ද්‍රජාලික කාලයකි. ඔබේ සිහින පිපී, සිනහව දිලෙන සුන්දර අවුරුද්දක් වේවා! ඔබේ අතථ්‍ය තෑගි පෙට්ටිය විවෘත කිරීමට පෙර පහත උපන් දින කේක් එකෙහි ඇති ඉටිපන්දම් 16ම නිවා දැමිය යුතුය!",
+        customize: "✏️ සැකසුම් පුවරුව:",
+        level: "පසුකළ මට්ටම",
+        leveldesc: "පරිපූර්ණත්වයේ වසර",
+        cakeTitle: "අතථ්‍ය උපන් දින කේක් එක",
+        cakeTip: "ඉටිපන්දම් එකින් එක ක්‍රියා විරහිත කර නිවා දමන්න!",
+        counting: "දැල්වෙන ඉටිපන්දම්:",
+        btnReset: "නැවත දල්වන්න",
+        statsTitle: "ආදරණීය සටහන්",
+        daysOnEarth: "මිහිමත ගතකළ දින ගණන",
+        snacks: "කාපු ප්‍රියතම කෑම ප්‍රමාණය",
+        hearts: "හොරකම් කළ හදවත් ගණන",
+        stolenBy: "ඇලෙක්ස්ගේ හදවත පමණි (ප්‍රධාන වශයෙන්)",
+        waitingBoxTitle: "රහස් සප්‍රයිස් තෑග්ගක් බලාපොරොත්තුවෙන්",
+        waitingBoxSub: "තෑග්ග විවෘත කිරීමට ඉටිපන්දම් 16ම නිවන්න",
+        unlockedTitle: "ජෙසිකාගේ 16 වෙනි තෑගි පෙට්ටිය",
+        unlockedTag: "ආදරණීය ජෙසිකා, ඔබ වෙනුවෙන්ම සැකසූ සුවිශේෂී තෑගි එකින් එක විවෘත කර බලන්න!",
+        btnCreMem: "අලුත් මතකයක් එක්කරන්න",
+        wellTitle: "🌌 තරු ප්‍රාර්ථනා ලිඳ",
+        wellSub: "දාසයවැනි වසරේ අපේක්ෂාවක් ලියා තාරකාවක් සේ අහසට මුදාහරින්න!",
+        footer: "මිහිරි 16 වෙනි උපන් දින අන්තර්ක්‍රියාකාරී තෑගි කලාපය © 2026."
+      }
+    };
+
+    // Synthesizer Happy Birthday score notes (frequency, duration, delay)
+    const birthdayNotes = [
+      { f: 261.63, d: 0.3, y: 0 },
+      { f: 261.63, d: 0.3, y: 0.4 },
+      { f: 293.66, d: 0.5, y: 0.8 },
+      { f: 261.63, d: 0.5, y: 1.4 },
+      { f: 349.23, d: 0.5, y: 2.0 },
+      { f: 329.63, d: 0.8, y: 2.6 },
+      
+      { f: 261.63, d: 0.3, y: 3.6 },
+      { f: 261.63, d: 0.3, y: 4.0 },
+      { f: 293.66, d: 0.5, y: 4.4 },
+      { f: 261.63, d: 0.5, y: 5.0 },
+      { f: 392.00, d: 0.5, y: 5.6 },
+      { f: 349.23, d: 0.8, y: 6.2 },
+      
+      { f: 261.63, d: 0.3, y: 7.2 },
+      { f: 261.63, d: 0.3, y: 7.6 },
+      { f: 523.25, d: 0.5, y: 8.0 },
+      { f: 440.00, d: 0.5, y: 8.6 },
+      { f: 349.23, d: 0.5, y: 9.2 },
+      { f: 329.63, d: 0.5, y: 9.8 },
+      { f: 293.66, d: 0.8, y: 10.4 },
+      
+      { f: 466.16, d: 0.3, y: 11.4 },
+      { f: 466.16, d: 0.3, y: 11.8 },
+      { f: 440.00, d: 0.5, y: 12.2 },
+      { f: 349.23, d: 0.5, y: 12.8 },
+      { f: 392.00, d: 0.5, y: 13.4 },
+      { f: 349.23, d: 1.0, y: 14.0 }
+    ];
+
+    // Initialize systems on window load
+    window.addEventListener("load", () => {
+      // Load local storage states
+      if (localStorage.getItem("s_gf_name")) {
+        girlfriendName = localStorage.getItem("s_gf_name");
+        senderName = localStorage.getItem("s_sender_name");
+        document.getElementById("gf-name-input").value = girlfriendName;
+        document.getElementById("sender-name-input").value = senderName;
+      }
+
+      if (localStorage.getItem("s_unlocked") === "true") {
+        isUnlocked = true;
+        document.getElementById("stage-locked").classList.add("hidden");
+        document.getElementById("stage-unlocked").classList.remove("hidden");
+      }
+
+      // Load items
+      const cachedItems = localStorage.getItem("s_memories");
+      if (cachedItems) {
+        try { items = JSON.parse(cachedItems); } catch (e) { items = [...defaultMemories]; }
+      } else {
+        items = [...defaultMemories];
+      }
+
+      // Load wishes
+      const cachedWishes = localStorage.getItem("s_star_wishes");
+      if (cachedWishes) {
+        try { wishes = JSON.parse(cachedWishes); } catch (e) { wishes = [...defaultWishes]; }
+      } else {
+        wishes = [...defaultWishes];
+      }
+
+      // Setup and render initially
+      updateStaticLabels();
+      renderCandlesGrid();
+      renderScrapGrid();
+      renderStarOrbits();
+      generateLocalWish();
+      lucide.createIcons();
+    });
+
+    // Translate all basic static panel text nodes
+    function updateStaticLabels() {
+      const keys = i18n[activeLanguage];
+      
+      document.getElementById("app-title").textContent = keys.title;
+      document.getElementById("app-subtitle").textContent = `${activeLanguage === "en" ? "✦ Sweet Sixteen Celebrating " + girlfriendName + " ✦" : "✦ " + girlfriendName + " ගේ මිහිරි 16 වෙනි උපන් දින සැමරුම ✦"}`;
+      document.getElementById("card-hero-tag").textContent = keys.tag;
+      document.getElementById("customize-label").textContent = keys.customize;
+      document.getElementById("level-badge-label").textContent = keys.level;
+      document.getElementById("level-desc-label").textContent = keys.leveldesc;
+      document.getElementById("cake-title").textContent = keys.cakeTitle;
+      document.getElementById("cake-tip").textContent = keys.cakeTip;
+      document.getElementById("candles-counting-text").textContent = keys.counting;
+      document.getElementById("btn-reset-candles").textContent = keys.btnReset;
+      document.getElementById("stats-title").textContent = keys.statsTitle;
+      
+      document.getElementById("years-on-earth-tag").textContent = keys.daysOnEarth;
+      document.getElementById("snacks-tag").textContent = keys.snacks;
+      document.getElementById("hearts-tag").textContent = keys.hearts;
+      document.getElementById("hearts-detail").textContent = `${activeLanguage === "en" ? "Just " + senderName + "'s (mostly)" : senderName + " ගේ හදවත පමණි"}`;
+      
+      document.getElementById("locked-gbox-title").textContent = keys.waitingBoxTitle;
+      document.getElementById("locked-gbox-subtitle").textContent = keys.waitingBoxSub;
+      
+      document.getElementById("unlocked-header-title").textContent = `${activeLanguage === "en" ? girlfriendName + "'s Sweet 16 Gift Box" : girlfriendName + " ගේ 16 වෙනි තෑගි පෙට්ටිය"}`;
+      document.getElementById("unlocked-header-tag").textContent = keys.unlockedTag;
+      document.getElementById("btn-create-memory-tag").textContent = keys.btnCreMem;
+      document.getElementById("well-title").textContent = keys.wellTitle;
+      document.getElementById("well-subtitle").textContent = keys.wellSub;
+      document.getElementById("footer-text").textContent = keys.footer;
+      
+      // Update signature card info
+      document.getElementById("sender-initials").textContent = senderName.substring(0, 2).toUpperCase();
+      document.getElementById("signature-sign").textContent = `${activeLanguage === "en" ? "Yours always, " + senderName : "ඔබේම ආදරණීය, " + senderName}`;
+      
+      const lockedP = keys.narrative.replace("Jessica", girlfriendName);
+      document.getElementById("locked-narrative-p").textContent = lockedP;
+
+      const signatureText = activeLanguage === "en" 
+        ? `To the girl who can light up a whole room just by walking in—Happy Birthday. I am so lucky to be standing by your side. Let's make sixteen unforgettable!`
+        : `මුළු කාමරයක්ම ඇගේ සුන්දර සිනහවෙන් ආලෝකවත් කළ හැකි අපූර්ව කෙල්ලට—සුභ උපන් දිනයක් වේවා! ඔයාගේ හෙවණැල්ල වෙලා ළඟින් ඉන්න ලැබීම මගේ ලොකුම වාසනාවක්. අපි අපේ 16 ලස්සනම එකක් කරමු!`;
+      document.getElementById("bento-signature-text").textContent = `“${signatureText}”`;
+
+      // Update names on visual cake
+      document.getElementById("cake-text-tag").textContent = girlfriendName.toUpperCase();
+    }
+
+    // Toggle language dictionary selection
+    function toggleLanguage() {
+      activeLanguage = activeLanguage === "en" ? "si" : "en";
+      const btn = document.getElementById("lang-toggle-btn");
+      if (activeLanguage === "si") {
+        btn.querySelector("span").textContent = "Translate to English";
+      } else {
+        btn.querySelector("span").textContent = "Translate to Sinhala (සිංහල)";
+      }
+      updateStaticLabels();
+      renderScrapGrid();
+      renderStarOrbits();
+      generateLocalWish();
+      loadQuizQuestion();
+    }
+
+    // Capture customized values inside the sandboxed settings inputs
+    function handleSandboxNameChange() {
+      girlfriendName = document.getElementById("gf-name-input").value || "Jessica";
+      senderName = document.getElementById("sender-name-input").value || "Alex";
+      
+      localStorage.setItem("s_gf_name", girlfriendName);
+      localStorage.setItem("s_sender_name", senderName);
+      
+      updateStaticLabels();
+    }
+
+    function resetLocks() {
+      localStorage.setItem("s_unlocked", "false");
+      isUnlocked = false;
+      document.getElementById("stage-locked").classList.remove("hidden");
+      document.getElementById("stage-unlocked").classList.add("hidden");
+      resetCandles();
+    }
+
+    // Light up 16 virtual candles
+    function renderCandlesGrid() {
+      const container = document.getElementById("candles-grid");
+      container.innerHTML = "";
+
+      for (let i = 0; i < 16; i++) {
+        const isLit = candles[i];
+        const candleDiv = document.createElement("div");
+        candleDiv.className = "flex flex-col items-center relative h-20 w-5 select-none";
+
+        // Generate color coding based on candle index
+        let bgGrad = "linear-gradient(to bottom, #fecdd3, #fda4af, #fecdd3)"; // Rose
+        if (i % 4 === 1) bgGrad = "linear-gradient(to bottom, #d9f99d, #a3e635, #d9f99d)"; // Lime
+        if (i % 4 === 2) bgGrad = "linear-gradient(to bottom, #bfdbfe, #60a5fa, #bfdbfe)"; // Light Blue
+        if (i % 4 === 3) bgGrad = "linear-gradient(to bottom, #fef08a, #facc15, #fef08a)"; // Yellow
+
+        candleDiv.innerHTML = `
+          <!-- Lit Flame -->
+          ${isLit ? `
+            <div 
+              onclick="blowSingleCandle(${i})" 
+              onmouseenter="blowSingleCandle(${i})" 
+              class="absolute -top-1.5 cursor-pointer z-40 animate-pulse duration-100 transition-all hover:scale-130"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-amber-500 drop-shadow-[0_0_6px_rgba(245,158,11,0.8)]">
+                <path d="M12 2C11.5 4 10.5 5.5 10.5 7C10.5 8.5 11.5 9.5 12 9.5C12.5 9.5 13.5 8.5 13.5 7C13.5 5.5 12.5 4 12 2Z" />
+                <path d="M12 9.5C10.5 9.5 9 11 9 13C9 15.5 10 17.5 12 17.5C14 17.5 15 15.5 15 13C15 11 13.5 9.5 12 9.5Z" opacity="0.8" />
+              </svg>
+            </div>
+          ` : `
+            <!-- Extinguished smoke loop -->
+            <div class="sky-smoke absolute -top-4 w-4 h-4 bg-gray-300 rounded-full blur-xs z-30 opacity-0 animate-ping"></div>
+          `}
+
+          <!-- Candlestick body -->
+          <div 
+            class="w-2 h-14 rounded-b-md relative top-4 shadow-inner transition-opacity duration-300"
+            style="background: ${bgGrad}; opacity: ${isLit ? 1 : 0.45};"
+          >
+            <!-- Wick -->
+            <div class="absolute top-[-3px] left-1/2 -translate-x-1/2 w-[1px] h-[3px] bg-gray-800"></div>
+            <!-- Embedded count label -->
+            <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-[7px] font-sans font-black text-white select-none">
+              ${i + 1}
+            </span>
+          </div>
+        `;
+        container.appendChild(candleDiv);
+      }
+      
+      const litRemaining = candles.filter(c => c).length;
+      document.getElementById("candles-counter-number").textContent = litRemaining;
+      
+      if (litRemaining === 0) {
+        handleUnlockCeremony();
+      }
+    }
+
+    // Extinguish candle node handler
+    function blowSingleCandle(idx) {
+      if (!candles[idx]) return;
+      candles[idx] = false;
+      playSynthesizedBlip(480, 80, 0.15); // soft candle out puff
+      renderCandlesGrid();
+    }
+
+    // Instantly solve puzzle cheat
+    function instantBlow() {
+      candles = new Array(16).fill(false);
+      renderCandlesGrid();
+    }
+
+    function resetCandles() {
+      candles = new Array(16).fill(true);
+      renderCandlesGrid();
+    }
+
+    function playSynthesizedBlip(startFreq, endFreq, duration) {
+      try {
+        const blipCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = blipCtx.createOscillator();
+        const gainNode = blipCtx.createGain();
+        
+        osc.frequency.setValueAtTime(startFreq, blipCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(endFreq, blipCtx.currentTime + duration);
+        
+        gainNode.gain.setValueAtTime(0.15, blipCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, blipCtx.currentTime + duration);
+        
+        osc.connect(gainNode);
+        gainNode.connect(blipCtx.destination);
+        
+        osc.start();
+        osc.stop(blipCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    // Confetti particles and unlock transitions
+    function handleUnlockCeremony() {
+      if (isUnlocked) return;
+      isUnlocked = true;
+      localStorage.setItem("s_unlocked", "true");
+
+      // Synth celebrated sweep chord
+      playUnlockSweeperChord();
+
+      // Trigger Confetti Exploder
+      triggerGlowConfetti();
+
+      setTimeout(() => {
+        document.getElementById("stage-locked").classList.add("hidden");
+        const unlockedSection = document.getElementById("stage-unlocked");
+        unlockedSection.classList.remove("hidden");
+        unlockedSection.scrollIntoView({ behavior: "smooth" });
+        updateStaticLabels();
+      }, 1000);
+    }
+
+    function playUnlockSweeperChord() {
+      try {
+        const cleanCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const chordFreqs = [261.63, 329.63, 392.00, 523.25]; // C major triad
+        const now = cleanCtx.currentTime;
+
+        chordFreqs.forEach((freq, idx) => {
+          const osc = cleanCtx.createOscillator();
+          const gainNode = cleanCtx.createGain();
+          
+          osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+          gainNode.gain.setValueAtTime(0, now);
+          gainNode.gain.linearRampToValueAtTime(0.2, now + idx * 0.08 + 0.04);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 1.2);
+          
+          osc.connect(gainNode);
+          gainNode.connect(cleanCtx.destination);
+          
+          osc.start();
+          osc.stop(now + 2.0);
+        });
+      } catch (e) {}
+    }
+
+    // custom confetti particle injector
+    function triggerGlowConfetti() {
+      const container = document.getElementById("confetti-container");
+      container.innerHTML = "";
+
+      const colors = ["#f43f5e", "#ec4899", "#d946ef", "#a855f7", "#3b82f6", "#10b981", "#fbbf24"];
+      
+      for (let i = 0; i < 80; i++) {
+        const p = document.createElement("div");
+        const size = Math.floor(Math.random() * 8) + 6;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        p.className = "absolute rounded-full pointer-events-none transition-all duration-1000";
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.backgroundColor = color;
+        p.style.left = "50%";
+        p.style.top = "50%";
+        p.style.boxShadow = `0 1px 6px ${color}88`;
+        
+        container.appendChild(p);
+
+        // Vector velocities
+        const angle = Math.random() * 360 * Math.PI / 180;
+        const speed = Math.random() * 300 + 150;
+        const targetX = Math.cos(angle) * speed;
+        const targetY = Math.sin(angle) * speed + 200; // factor gravity downward gravity
+
+        setTimeout(() => {
+          p.style.transform = `translate(${targetX}px, ${targetY}px) scale(0.3)`;
+          p.style.opacity = "0";
+        }, 30);
+      }
+    }
+
+
+    /* TABS NAVIGATORS SWAP */
+    function switchTab(tabId) {
+      activeTabId = tabId;
+      
+      // Hide all panels
+      document.getElementById("panel-letter").classList.add("hidden");
+      document.getElementById("panel-scrapbook").classList.add("hidden");
+      document.getElementById("panel-quiz").classList.add("hidden");
+      document.getElementById("panel-well").classList.add("hidden");
+
+      // Show chosen panel
+      document.getElementById(`panel-${tabId}`).classList.remove("hidden");
+
+      // Reset navigational CSS indicators
+      ["letter", "scrapbook", "quiz", "well"].forEach((id) => {
+        const btn = document.getElementById(`tab-${id}`);
+        const activeDot = btn.querySelector(".active-tab-dot");
+        
+        if (id === tabId) {
+          btn.className = "p-4 rounded-2xl border-2 text-left transition-all duration-300 relative overflow-hidden group cursor-pointer border-rose-400 bg-rose-50/60 shadow-xs";
+          activeDot.classList.remove("hidden");
+        } else {
+          btn.className = "p-4 rounded-2xl border-2 text-left transition-all duration-300 relative overflow-hidden group cursor-pointer border-rose-100/50 bg-white hover:border-rose-200 hover:bg-rose-50/20";
+          activeDot.classList.add("hidden");
+        }
+      });
+    }
+
+
+    /* COMPONENT A: DYNAMIC LOCAL LETTER WISHES COMPILER (OFFLINE SAFE) */
+    function generateLocalWish() {
+      const toneChoice = document.getElementById("user-tone").value;
+      const targetSweets = document.getElementById("user-favor-things").value || "vanilla cupcakes";
+      
+      let letterTitle = "";
+      let letterBody = "";
+      let quote = "";
+      let wishesList = [];
+      let predictionsList = [];
+
+      if (activeLanguage === "en") {
+        if (toneChoice === "romantic") {
+          letterTitle = `To My Forever Sweetheart, Jessica ❤️`;
+          letterBody = `Jessica, reaching 16 is a major milestone, and being by your side for it makes me the luckiest person in the universe. Your laugh has this magic ability to turn any rainy dark day into pure cozy sunshine.
+
+I remember how your eyes crinkle with happiness whenever we share ${targetSweets}. You make the simplest dates feel like elegant fairytale trips. As you step into your sixteenth year, I want you to know that my heart is holding yours tighter than ever.
+
+May your sixteen sparkles represent sixteen beautiful dreams blooming one by one. Happy Sweet Sixteen, my gorgeous girl!`;
+          quote = `“You are my favorite star in a universe of gorgeous wonders.”`;
+          wishesList = [
+            "Your beautiful laughter echoes forever in warm rooms.",
+            "Tasty baking adventures with sweet frosting tops.",
+            "Infinite starry cozy walks holding my hand tight."
+          ];
+          predictionsList = [
+            "You will master beautiful acoustic chords this winter.",
+            "A breathtaking photography exploration during our next ride.",
+            "You get keys to open ten thousand golden opportunities."
+          ];
+        } else if (toneChoice === "poetic") {
+          letterTitle = `Sixteen Stars in Your Pretty Eyes 📜`;
+          letterBody = `The willow trees dance when you step in the room,
+And winter and cold cannot stifle your bloom.
+My sweet darling Jessica, reaching sixteen,
+The prettiest queen that the stars have all seen.
+
+We've shared warm vanilla, we've walked in the snow,
+We've sat on the grass in the twilight sweet glow.
+With ${targetSweets} that you completely adore,
+I love you today, and tomorrow much more.
+
+So blow out the flames and let dreams fly out high,
+Like sparkling white clouds in a lavender sky!`;
+          quote = `“Lavender winds soft across the bay, wishing you perfect starlight today.”`;
+          wishesList = [
+            "Poems of pink petals falling on your pathway.",
+            "Always finding warm sunny pockets on cold mornings.",
+            "A year of singing sweet acoustic songs on grass."
+          ];
+          predictionsList = [
+            "You write a beautiful diary book full of happy dates.",
+            "A cute little stray white kitten comes to play.",
+            "A surprise sweet box of vanilla pies on your desk."
+          ];
+        } else if (toneChoice === "funny") {
+          letterTitle = `Happy 16th to My Favorite Cozy Thief! 🤪`;
+          letterBody = `Happy sweet 16 to the girl who stole my huge warm gloves, constantly takes credit for drawing cute doodles, and is physically obsessed with ${targetSweets}!
+
+I still don't know how that tiny stomach of yours survives on so much frosting, but it is easily your most impressive superpower. Everyday with you is a lighthearted comedy show, and I'm totally glued to my seat.
+
+Please promise me you will never stop laughing at your own goofy jokes or stealing my comfy hoodies. I love you like crazy and can't wait to see you conquer age 16!`;
+          quote = `“Happy Sweet 16 to the cutest hoody robber in existence!”`;
+          wishesList = [
+            "Unlimited free cupcakes arriving at your door.",
+            "None of your custom drawings ever getting smudged.",
+            "Never getting caught stealing Alex's comfy sweaters."
+          ];
+          predictionsList = [
+            "You will sleep in until 12:30 PM at least twenty times.",
+            "You accidentally bake a giant cupcake the size of a cat.",
+            "Your relationship chemistry scorecard exceeds all expectations."
+          ];
+        } else {
+          letterTitle = `Wishing the Prettiest Girl a Magical Sweet 16! 🌸`;
+          letterBody = `To the sweetest person, happy 16th birthday! Reaching sixteen is a gorgeous milestone where your path starts to sparkle.
+
+You are made of absolute pure bubblegum sugar, acoustic tunes, and cozy lazy mornings. Incorporating elements like ${targetSweets} into your dates is my favorite daily quest. You make everyone around you so incredibly happy just by smiling.
+
+Have the most wonderful sweet sixteenth year, filled with endless colorful balloons, sweet bites, and sparkly ribbons!`;
+          quote = `“Starlight and sugar crowns for the prettiest birthday princess!”`;
+          wishesList = [
+            "A warm pink sunset greeting you every evening.",
+            "Getting your favorite cute stickers for scrapbooks.",
+            "Infinite vanilla pastries baked by Alex."
+          ];
+          predictionsList = [
+            "You discover a beautiful brand new coffee shop.",
+            "You make a gorgeous watercolor collage of flowers.",
+            "Your seventeenth year begins with a massive cute smile."
+          ];
+        }
+      } else {
+        // Sinhala Language Translations Compilation (සිංහල)
+        if (toneChoice === "romantic") {
+          letterTitle = `මගේ එකම ආදරණීය ජෙසිකාටයි ❤️`;
+          letterBody = `ජෙසිකා, ඔබ සොඳුරු දහසයවන වියට එළඹෙන මෙම විශේෂ මොහොතේ ඔබේ ළඟින්ම ඉන්න ලැබීම මගේ මුළු ජීවිතයේම ලොකුම භාග්‍යයක්. ඔයාගේ ලස්සන හිනාවට පුළුවන් පාළු අන්ධකාර දවසක් මහත් සතුටින් පුරවන්න.
+
+අපි දෙන්නා බෙදාගෙන කාපු ${targetSweets} රසවත් මතකයන් තාමත් මගේ හදවතේ තියෙනවා. ඔයා මගේ ජීවිතේ සුරංගනා කතාවක් කළා.
+
+ඔබේ දහසයවන වසරේ හැම තත්පරයක්ම අනන්තවත් ආදරයෙන් සහ සතුටෙන් පිරි ඉතිරි යත්වා! මිහිරි 16 වෙනි උපන් දිනයක් වේවා මගේ පැටියෝ!`;
+          quote = `“ඔබ මේ විශ්වයේ දැකිය හැකි ලස්සනම තාරකාවයි.”`;
+          wishesList = [
+            "ඔබේ ලස්සන සිනහව හැමදාමත් හදවතේ රැඳේවා.",
+            "රසවත් කේක් කෑමට සහ හැදීමට ලැබේවා.",
+            "අත් අල්ලාගෙන තරු පිරි අහස යට ඇවිද යන්නට ලැබේවා."
+          ];
+          predictionsList = [
+            "මෙම ශීත සෘතුවේදී මනරම් ගීත වාදනය කිරීමට ඉගෙන ගනු ඇත.",
+            "ඊළඟ ගමනේදී ලස්සනම ඡායාරූප රාශියක් ගනු ඇත.",
+            "ජීවිතයේ අනන්තවත් නව දොරටු විවර වනු ඇත."
+          ];
+        } else if (toneChoice === "poetic") {
+          letterTitle = `ඔබේ දෑසේ දිලෙන තරු දහසය 📜`;
+          letterBody = `ඔබ එන විට වසන්තය ළඟාවී වගේ,
+ඔබේ සිනහව මගේ මුළු ලෝකයම සනසවයි.
+මගේ ආදරණීය ජෙසිකා වෙත,
+තරු දිලෙන 16 වන උපන් දින පැතුමයි.
+
+අපි විඳි සුවඳ, අපි ඇවිද ගිය මාවත්,
+අපි මැවූ ආදරය, අපේ හදවත්.
+${targetSweets} රසයට වඩා මිහිරි ආදරයකින්,
+මම ඔයාට ආදරෙයි හැමදාමත් මගේ හදවතින්.`;
+          quote = `“තරු පිරි අහස මෙන් ඔබේ ජීවිතයද ආලෝකමත් වේවා.”`;
+          wishesList = [
+            "ඔබේ මාවතේ මල් පෙති විසිරේවා.",
+            "හැමදාම උදෑසන උණුසුම් ආදරණීය සිනහවකින් පිබිදේවා.",
+            "වසන්තයේ සොඳුරු ගී ගයන්නට ලැබේවා."
+          ];
+          predictionsList = [
+            "ඔබේ දිනපොතේ ලස්සනම මතකයන් ලියවෙනු ඇත.",
+            "සුරතල් සුදු පූස් පැටියෙකු හමුවනු ඇත.",
+            "උදෑසන මේසය මත ලස්සන මල් කළඹක් තිබෙනු ඇත."
+          ];
+        } else if (toneChoice === "funny") {
+          letterTitle = `හොරාට උපන් දින පැතුමක්! 🤪`;
+          letterBody = `මගේ ලොකු සීතල අත් මේස් හොරකම් කරපු, හැමදාම මගේ ජැකට් අඳින, ${targetSweets} කන්න පෙරේත මගේ රත්තරං කෙල්ලට සුභ 16 වෙනි උපන් දිනයක් වේවා!
+
+ඔයාගේ පුංචි බඩට ඔය හැටි කේක් කන්න පුළුවන් කොහොමද කියලා මට තාමත් හිතාගන්න බෑ. ඒකනම් ඔයාගේ සුපිරි බලයක් වෙන්න ඕනේ!
+
+ඔයාගේ විහිළු වලට ඔයාම හිනාවෙන එක කවදාවත් නතර කරන්න එපා. මම ඔයාට ගොඩාක් ආදරෙයි!`;
+          quote = `“ලෝකෙ ඉන්න ලස්සනම ජැකට් හොරාට සුභ උපන් දිනයක්!”`;
+          wishesList = [
+            "නොමිලේ ලැබෙන කේක් පෙට්ටි ගෙදරටම ලැබේවා.",
+            "ඔයා අඳින ලස්සන චිත්‍ර කවදාවත් මැකී නොයේවා.",
+            "ඇලෙක්ස්ගේ ජැකට් ඇඳලා කවදාවත් අහුවෙන්න එපා."
+          ];
+          predictionsList = [
+            "දවල් 12 වනතුරු නිදා ගන්නට අවස්ථාව ලැබේවා.",
+            "පූසෙක් වගේ ලොකු කේක් එකක් හැදීමට හැකිවනු ඇත.",
+            "ආදර රසායන විද්‍යා පරීක්ෂණයේ උපරිම ලකුණු ලැබේවා."
+          ];
+        } else {
+          letterTitle = `සුන්දර කුමරියකට මිහිරි 16 උපන් දින පැතුමක්! 🌸`;
+          letterBody = `මිහිරි 16 වෙනි වියට එළඹෙන මගේ සුන්දර ලෝකයට සුභ උපන් දිනයක්!
+
+ඔයා හැදුණේ සුදු සීනි, ගිටාර් සංගීතය සහ හුරුබුහුටි ආදරයෙන් කියලා මට හිතෙනවා. ${targetSweets} ඔයාගේ ජීවිතයට රසවත් බවක් ගේනවා.
+
+ඔයාගේ ලස්සන සිනහවෙන් මුළු ලෝකයම ලස්සන වෙනවා. සතුටු උපන් දිනයක් වේවා!`;
+          quote = `“මගේ පුංචි ආදර කුමරියට සුභ උපන් දිනයක්!”`;
+          wishesList = [
+            "හැම හැන්දෑවකම ලස්සන රෝස පාට අහසක් දකින්න ලැබේවා.",
+            "ස්ටිකර් වලින් පිරුණු ලස්සන පොතක් ලැබේවා.",
+            "ඇලෙක්ස් විසින් සාදන රසවත් කෑම කන්නට ලැබේවා."
+          ];
+          predictionsList = [
+            "ඔබ අලුත්ම සුන්දර කෝපි කඩයක් සොයාගනු ඇත.",
+            "මල් වලින් පිරුණු ලස්සන ඕකිඩ් චිත්‍රයක් අඳිනු ඇත.",
+            "ඔබ සතුටු සිනහවකින් වසර අරඹනු ඇත."
+          ];
+        }
+      }
+
+      document.getElementById("card-card-title").textContent = letterTitle;
+      document.getElementById("card-card-body").textContent = letterBody;
+      document.getElementById("card-card-quote").textContent = quote;
+
+      // Render 3 wishes list HTML
+      const wishesContainer = document.getElementById("card-card-wishes");
+      wishesContainer.innerHTML = "";
+      wishesList.forEach((w) => {
+        const d = document.createElement("div");
+        d.className = "bg-white border border-stone-200 p-3 rounded-2xl shadow-xs hover:shadow-md transition";
+        d.innerHTML = `
+          <i data-lucide="heart" class="w-4 h-4 text-rose-400 fill-rose-100 mb-1"></i>
+          <p class="text-[11px] font-sans font-semibold text-stone-700 leading-normal">${w}</p>
+        `;
+        wishesContainer.appendChild(d);
+      });
+
+      // Render predictions HTML
+      const predictionsContainer = document.getElementById("card-card-predictions");
+      predictionsContainer.innerHTML = "";
+      predictionsList.forEach((p, idx) => {
+        const d = document.createElement("div");
+        d.className = "flex items-center gap-2.5 bg-stone-100/60 p-2 rounded-xl border border-stone-200/30";
+        d.innerHTML = `
+          <span class="w-5 h-5 bg-pink-100 rounded-full flex items-center justify-center font-mono text-[10px] font-bold text-pink-700">${idx+1}</span>
+          <p class="text-xs font-sans font-bold text-gray-600 leading-normal flex-1 text-left">${p}</p>
+        `;
+        predictionsContainer.appendChild(d);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Copy Quote to user clipboard
+    function copyCardQuote() {
+      const textToCopy = document.getElementById("card-card-quote").textContent;
+      navigator.clipboard.writeText(textToCopy);
+      
+      const copyBtn = document.getElementById("btn-copy-tag");
+      copyBtn.textContent = activeLanguage === "en" ? "Copied! ❤️" : "කොපි කළා! ❤️";
+      setTimeout(() => {
+        copyBtn.textContent = activeLanguage === "en" ? "Copy Quote" : "කොපි කරන්න";
+      }, 2000);
+    }
+
+
+    /* COMPONENT B: SELF-CONTAINED LOCAL MEMORY SCRAPBOOK */
+    function renderScrapGrid() {
+      const grid = document.getElementById("scrap-polaroid-grid");
+      grid.innerHTML = "";
+
+      items.forEach((item, idx) => {
+        const polaroid = document.createElement("div");
+        polaroid.className = "bg-white p-4 pb-6 shadow-xl border border-rose-100 rounded-lg max-w-xs w-full relative group transition-all duration-300 transform";
+        
+        // Random tilt angle degrees
+        const angle = idx % 2 === 0 ? "-1.5deg" : "1.5deg";
+        polaroid.style.transform = `rotate(${angle})`;
+
+        // Choose sticker
+        let stickerSvg = `<i data-lucide="heart" class="w-5 h-5 text-rose-500 fill-rose-500 animate-pulse"></i>`;
+        if (item.sticker === "star") stickerSvg = `<i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-yellow-400"></i>`;
+        if (item.sticker === "flower") stickerSvg = `<i data-lucide="sparkles" class="w-5 h-5 text-pink-400"></i>`;
+
+        polaroid.innerHTML = `
+          <div class="absolute top-2.5 right-4 z-20 bg-white/70 backdrop-blur-xs p-1 rounded-full shadow-xs">
+            ${stickerSvg}
+          </div>
+          <!-- Pin Tape piece visual -->
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 w-24 h-5 bg-rose-100/80 rotate-1 shadow-xs border-x border-rose-200/40 select-none flex items-center justify-center font-mono text-[9px] font-bold text-rose-600/70">
+            SWEET PEA
+          </div>
+
+          <!-- Image frame -->
+          <div class="w-full h-52 overflow-hidden rounded-md border border-gray-100 bg-gray-50 relative pointer-events-none">
+            <img src="${item.imageUrl}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt="Date photo">
+            <div class="absolute bottom-2 left-2 bg-black/60 text-white rounded-md px-2 py-0.5 text-[9px] uppercase font-mono tracking-widest leading-none">
+              ${item.date}
+            </div>
+          </div>
+
+          <!-- Text message -->
+          <div class="mt-4 text-left">
+            <h5 class="font-sans font-black text-rose-950 text-sm tracking-tight border-b border-rose-50 pb-1.5 flex items-center justify-between">
+              <span>${activeLanguage === "en" ? item.title : (item.title_si || item.title)}</span>
+              <button onclick="deleteMemory('${item.id}')" class="p-1 text-gray-400 hover:text-rose-500 transition rounded" title="Remove memory">
+                <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+              </button>
+            </h5>
+            <p class="text-[11px] text-gray-600 mt-2 leading-relaxed font-sans font-medium line-clamp-3">
+              ${activeLanguage === "en" ? item.description : (item.description_si || item.description)}
+            </p>
+          </div>
+        `;
+        grid.appendChild(polaroid);
+      });
+
+      if (items.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full border-2 border-dashed border-rose-100 rounded-3xl p-10 text-center text-gray-400 max-w-sm">
+            <h5 class="font-bold text-rose-900 mb-1">Scrapbook is empty</h5>
+            <p class="text-xs text-rose-400">Create one using the button above!</p>
+          </div>
+        `;
+      }
+
+      lucide.createIcons();
+    }
+
+    function toggleScrapbookForm() {
+      const form = document.getElementById("scrapbook-form-card");
+      form.classList.toggle("hidden");
+    }
+
+    let formStickerChoice = "heart";
+    function setFormSticker(sticker) {
+      formStickerChoice = sticker;
+      document.getElementById("stick-heart").className = `p-2 border rounded-lg ${sticker === "heart" ? "bg-pink-100 text-rose-600 scale-105" : "bg-white text-gray-400"} transition`;
+      document.getElementById("stick-star").className = `p-2 border rounded-lg ${sticker === "star" ? "bg-pink-100 text-yellow-500 scale-105" : "bg-white text-gray-400"} transition`;
+      document.getElementById("stick-flower").className = `p-2 border rounded-lg ${sticker === "flower" ? "bg-pink-100 text-pink-500 scale-105" : "bg-white text-gray-400"} transition`;
+    }
+
+    function addScrapbookMemory() {
+      const title = document.getElementById("scrap-title").value;
+      const date = document.getElementById("scrap-date").value;
+      const desc = document.getElementById("scrap-desc").value;
+      const img = document.getElementById("scrap-img").value;
+
+      if (!title || !date || !desc) return;
+
+      const newMemory = {
+        id: Date.now().toString(),
+        date: date,
+        title: title,
+        title_si: title,
+        description: desc,
+        description_si: desc,
+        imageUrl: img,
+        sticker: formStickerChoice
+      };
+
+      items.unshift(newMemory);
+      localStorage.setItem("s_memories", JSON.stringify(items));
+      
+      // Reset input fields
+      document.getElementById("scrap-title").value = "";
+      document.getElementById("scrap-date").value = "";
+      document.getElementById("scrap-desc").value = "";
+      
+      toggleScrapbookForm();
+      renderScrapGrid();
+    }
+
+    function deleteMemory(id) {
+      items = items.filter(m => m.id !== id);
+      localStorage.setItem("s_memories", JSON.stringify(items));
+      renderScrapGrid();
+    }
+
+
+    /* COMPONENT C: COZY STATIC RELATIONSHIP TRIVIA QUIZ */
+    let quizIdx = 0;
+    let quizSelectedAnswer = null;
+    let quizScore = 0;
+    
+    // Static Quiz Questions Dictionary with custom localized Sinhala nodes
+    const quizQuestions = [
+      {
+        question: "What is my absolute favorite nickname to call you when you're being super adorable?",
+        question_si: "ඔයා හරිම හුරතල් විදිහට හැසිරෙනකොට මම කතා කරන්න ආසම නම කුමක්ද?",
+        options: ["Princess / Queen", "My Little Strawberry 🍓", "Sweet Pea", "Bubblebutt 🌸"],
+        options_si: ["කුමරී / මගේ රැජින", "My Little Strawberry 🍓", "Sweet Pea", "Bubblebutt 🌸"],
+        correct: 1,
+        explanation: "Yes! There's nothing sweeter than calling you 'My Little Strawberry' and watching you crinkle your nose!",
+        explanation_si: "ඔව්! ඔයාට 'My Little Strawberry' කියනකොට ඔයාගේ නහය රැලි වෙලා සතුටින් හිනාවෙන එක ලෝකෙම ලස්සනම දසුනයි!"
+      },
+      {
+        question: "Where did we share our very first official meeting or warm hug together?",
+        question_si: "අපි දෙන්නා පළමු වතාවට හමුවෙලා වැළඳගත්තේ කොහේද?",
+        options: ["Under the rain at the bus stop", "By the cozy corner table in the library", "Under the big pine tree at the park", "Right in front of my porch"],
+        options_si: ["බස් නැවතුමේ වැස්ස යට", "පුස්තකාලයේ කොනක ඇති මේසය ළඟ", "පූදින පයින් ගස් වනාන්තර සංකීර්ණය ළඟ", "මගේ නිවසේ සඳළුතලයේ"],
+        correct: 2,
+        explanation: "Absolutely! The wind was so chilly, but holding you tight under that pine tree made the whole world completely warm.",
+        explanation_si: "හරියටම හරි! හුළඟ ගොඩක් සීතල වුණත් ඒ පයින් ගහ යට ඔයාව බදාගත්තම මුළු ලෝකෙම උණුසුම් වුණා."
+      },
+      {
+        question: "What is your biggest cute habit that always melts my heart in a millisecond?",
+        question_si: "තත්පරයකින් මගේ හදවත දියකර හරින ඔයාගේ ලස්සනම පුරුද්ද කුමක්ද?",
+        options: ["How your nose crinkles when laughing", "Your cute hoodies with folded rolled-up sleeves", "Your cute little high-pitched gasp when excited", "All of the above combined! 🥰"],
+        options_si: ["හිනාවෙනකොට නහය රැලි වෙන එක", "මගේ ජැකට් අත් දෙක නවලා අඳින විදිහ", "සතුටු වුණාම ඇතිවන සිනහ ස්වරය", "මේ හැම එකක්ම! 🥰"],
+        correct: 3,
+        explanation: "Tricked you—it's absolutely ALL of them! Every single tiny habit of yours makes me fall in love over and over.",
+        explanation_si: "රැවටුණා නේද—ඇත්තටම මේ හැම එකකටම මම ආසයි! ඔයාගේ හැම පුරුද්දක්ම මාව ඔයාට තව තවත් ආදරේ කරන්න පෙළඹෙනවා."
+      }
+    ];
+
+    function loadQuizQuestion() {
+      if (quizIdx >= quizQuestions.length) {
+        renderQuizResults();
+        return;
+      }
+
+      const q = quizQuestions[quizIdx];
+      document.getElementById("quiz-counter").textContent = `${activeLanguage === "en" ? "Question " + (quizIdx+1) + "/" + quizQuestions.length : "ප්‍රශ්නය " + (quizIdx+1) + "/" + quizQuestions.length}`;
+      document.getElementById("quiz-question-txt").textContent = activeLanguage === "en" ? q.question : q.question_si;
+
+      const optsGroup = document.getElementById("quiz-options-group");
+      optsGroup.innerHTML = "";
+      
+      const currentOpts = activeLanguage === "en" ? q.options : q.options_si;
+
+      currentOpts.forEach((opt, idx) => {
+        const optBtn = document.createElement("button");
+        optBtn.className = "flex items-center justify-between border-2 border-rose-100 bg-white hover:bg-rose-50/40 p-3.5 text-left text-xs font-semibold rounded-2xl transition duration-300 cursor-pointer text-rose-900";
+        optBtn.innerHTML = `<span>${opt}</span>`;
+        optBtn.onclick = () => selectQuizAnswer(idx);
+        optsGroup.appendChild(optBtn);
+      });
+
+      document.getElementById("quiz-feedback-box").classList.add("hidden");
+      document.getElementById("quiz-next-btn").classList.add("hidden");
+    }
+
+    function selectQuizAnswer(choice) {
+      if (quizSelectedAnswer !== null) return;
+      quizSelectedAnswer = choice;
+
+      const q = quizQuestions[quizIdx];
+      const isCorrect = choice === q.correct;
+      
+      if (isCorrect) quizScore++;
+
+      // Update styling options colors
+      const optionsStack = document.getElementById("quiz-options-group").children;
+      for (let i = 0; i < optionsStack.length; i++) {
+        const btn = optionsStack[i];
+        btn.onclick = null; // disable further actions
+        if (i === q.correct) {
+          btn.className = "flex items-center justify-between border-2 border-emerald-300 bg-emerald-50 text-emerald-800 font-bold p-3.5 text-xs rounded-2xl";
+        } else if (i === choice) {
+          btn.className = "flex items-center justify-between border-2 border-rose-300 bg-rose-50 text-rose-800 font-bold p-3.5 text-xs rounded-2xl";
+        } else {
+          btn.className = "flex items-center justify-between border-2 border-rose-100 bg-gray-50/50 text-gray-400 p-3.5 text-xs rounded-2xl";
+        }
+      }
+
+      // Display explanation box
+      const heading = document.getElementById("feedback-title");
+      const desc = document.getElementById("feedback-desc");
+      
+      heading.textContent = isCorrect 
+        ? `${activeLanguage === "en" ? "Correct! Absolutely Perfect!" : "නිවැරදියි! ගොඩක් හොඳයි!"}`
+        : `${activeLanguage === "en" ? "Sweet Try! Not Quite!" : "හුරතල් උත්සාහයකි, නමුත් වැරදියි!"}`;
+      
+      desc.textContent = activeLanguage === "en" ? q.explanation : q.explanation_si;
+
+      document.getElementById("quiz-feedback-box").classList.remove("hidden");
+      
+      const nextBtn = document.getElementById("quiz-next-btn");
+      nextBtn.classList.remove("hidden");
+      nextBtn.querySelector("span").textContent = quizIdx + 1 === quizQuestions.length 
+        ? `${activeLanguage === "en" ? "Finish & Get Chemistry Score" : "ලකුණු පුවරුව බලන්න"}` 
+        : `${activeLanguage === "en" ? "Next Question" : "ඊළඟ ප්‍රශ්නය"}`;
+    }
+
+    function quizNextStep() {
+      quizIdx++;
+      quizSelectedAnswer = null;
+      loadQuizQuestion();
+    }
+
+    function renderQuizResults() {
+      document.getElementById("quiz-body").classList.add("hidden");
+      const resultBox = document.getElementById("quiz-result-box");
+      resultBox.classList.remove("hidden");
+
+      document.getElementById("quiz-res-score").textContent = `${quizScore} / ${quizQuestions.length}`;
+      
+      const comment = document.getElementById("quiz-res-evaluation");
+      if (quizScore === quizQuestions.length) {
+        comment.textContent = activeLanguage === "en"
+          ? "OH MY GOD! Perfect score! You truly know me better than anyone else. You are my absolute soulmate! ❤️"
+          : "දෙවියනේ! උපරිම ලකුණු! ඔයා මගේ හිත හොඳින්ම දන්නා මගේ ආත්මීය සහකාරියයි! ❤️";
+      } else {
+        comment.textContent = activeLanguage === "en"
+          ? "A fantastic score! everyday with you is a gorgeous adventure."
+          : "ප්‍රශංසා ලැබිය යුතු ලකුණක්! ඔබ සමඟ ගතකරන සෑම තත්පරයක්ම ආදර කතාවකි.";
+      }
+    }
+
+    function restartQuiz() {
+      quizIdx = 0;
+      quizScore = 0;
+      quizSelectedAnswer = null;
+      document.getElementById("quiz-body").classList.remove("hidden");
+      document.getElementById("quiz-result-box").classList.add("hidden");
+      loadQuizQuestion();
+    }
+
+
+    /* COMPONENT D: MAGICAL STAR WISHING WELL */
+    function renderStarOrbits() {
+      const parent = document.getElementById("stars-orbital-grid");
+      parent.innerHTML = "";
+
+      wishes.forEach((w) => {
+        const starNode = document.createElement("div");
+        starNode.style.left = `${w.x}%`;
+        starNode.style.top = `${w.y}%`;
+        starNode.className = "absolute cursor-pointer flex items-center justify-center group";
+        
+        // Glow shadows customized
+        starNode.innerHTML = `
+          <div 
+            onclick="decodeStarWish('${w.id}')"
+            class="rounded-full shadow-lg relative transition-all duration-300 group-hover:scale-130"
+            style="width: ${w.size}px; height: ${w.size}px; background-color: ${w.color}; box-shadow: 0 0 ${w.size*3}px ${w.color}, 0 0 ${w.size*6}px ${w.color}"
+          ></div>
+        `;
+        parent.appendChild(starNode);
+      });
+    }
+
+    function decodeStarWish(id) {
+      hoveredWishId = id;
+      const target = wishes.find(w => w.id === id);
+      
+      document.getElementById("decoder-heading").classList.remove("hidden");
+      const desc = document.getElementById("decoder-desc");
+      
+      desc.textContent = `“${activeLanguage === "en" ? target.text : (target.text_si || target.text)}”`;
+      
+      document.getElementById("decoder-delete-btn").classList.remove("hidden");
+    }
+
+    function launchWishStar() {
+      const txt = document.getElementById("well-text-input").value;
+      if (!txt.trim()) return;
+
+      const colors = ["#fecdd3", "#fef08a", "#bfdbfe", "#e9d5ff", "#fed7aa"];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.floor(Math.random() * 3) + 4; // 4 to 6px
+      const randomX = Math.floor(Math.random() * 80) + 10; // 10% to 90%
+      const randomY = Math.floor(Math.random() * 50) + 15; // 15% to 65%
+
+      const newWish = {
+        id: Date.now().toString(),
+        text: txt.trim(),
+        text_si: txt.trim(),
+        x: randomX,
+        y: randomY,
+        size: size,
+        color: randomColor
+      };
+
+      wishes.push(newWish);
+      localStorage.setItem("s_star_wishes", JSON.stringify(wishes));
+
+      document.getElementById("well-text-input").value = "";
+      renderStarOrbits();
+
+      // Soft sparkling synths note pop
+      playSynthesizedBlip(550, 920, 0.45);
+    }
+
+    function deleteWish() {
+      if (!hoveredWishId) return;
+      wishes = wishes.filter(w => w.id !== hoveredWishId);
+      localStorage.setItem("s_star_wishes", JSON.stringify(wishes));
+      
+      // Reset decoder bubble text
+      document.getElementById("decoder-heading").classList.add("hidden");
+      document.getElementById("decoder-desc").textContent = "[ Click an orbital constellation node to decipher a secret desire ]";
+      document.getElementById("decoder-delete-btn").classList.add("hidden");
+      
+      hoveredWishId = null;
+      renderStarOrbits();
+    }
+
+
+    /* MUSIC BOX RETRO SEQUENCER MIDI SYNTH PLAYBACK */
+    function toggleMusicPlayback() {
+      if (musicIsPlaying) {
+        stopSequencerMelody();
+      } else {
+        startSequencerMelody();
+      }
+    }
+
+    function startSequencerMelody() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      
+      musicIsPlaying = true;
+      document.getElementById("music-icon-state").setAttribute("data-lucide", "square");
+      document.getElementById("music-playing-label").textContent = "Happy Birthday ♪";
+      
+      lucide.createIcons();
+
+      // Schedule score notes
+      const seqLoopTime = 16.0; // Seconds sequence loop limit
+      
+      const now = audioCtx.currentTime;
+
+      birthdayNotes.forEach((n) => {
+        const timerId = setTimeout(() => {
+          triggerPianoKey(n.f, n.d);
+        }, n.y * 1000);
+        songTimers.push(timerId);
+      });
+
+      // Loop after timeout ends
+      const loopTimer = setTimeout(() => {
+        startSequencerMelody();
+      }, seqLoopTime * 1000);
+      songTimers.push(loopTimer);
+    }
+
+    function triggerPianoKey(freq, duration) {
+      if (!audioCtx || !musicIsPlaying) return;
+
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function stopSequencerMelody() {
+      musicIsPlaying = false;
+      document.getElementById("music-icon-state").setAttribute("data-lucide", "play");
+      document.getElementById("music-playing-label").textContent = "Retro Music Stopped";
+      
+      lucide.createIcons();
+
+      // Clear timed triggers
+      songTimers.forEach(t => clearTimeout(t));
+      songTimers = [];
+    }
+  </script>
+
+</body>
+</html>
