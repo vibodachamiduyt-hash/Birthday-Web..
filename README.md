@@ -1,6 +1,5 @@
 Try now on 
+vibodachamidu.netlify.app
 
-      vibodachamidu.netlify.app
-
-      And impress your girl
+     And impress your girl
    
